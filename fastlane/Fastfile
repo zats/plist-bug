@@ -1,0 +1,24 @@
+INFO_PLIST="fastlane/Info.plist"
+XCODEPROJ_PATH="fastlane.xcodeproj"
+
+platform :ios do
+  lane :doesnt_work do |options|
+    update_info_plist(plist_path: INFO_PLIST, xcodeproj: XCODEPROJ_PATH, block: lambda { |plist|
+      # ...
+      plist[:CFBundleDisplayName] = 'This is not going to work'
+      plist['FacebookUrlSchemeSuffix'] = 'url scheme'
+      # ...
+      skip_docs
+    })
+  end
+
+  lane :works do |options|
+    update_info_plist(plist_path: INFO_PLIST, xcodeproj: XCODEPROJ_PATH, block: lambda { |plist|
+      # ...
+      plist['CFBundleDisplayName'] = 'This is going to work'
+      plist['FacebookUrlSchemeSuffix'] = 'url scheme'
+      # ...
+      skip_docs
+    })
+  end
+end
